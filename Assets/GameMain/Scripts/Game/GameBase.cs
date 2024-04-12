@@ -5,7 +5,9 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
+using GameFramework.DataNode;
 using GameFramework.Event;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityGameFramework.Runtime;
 
@@ -53,6 +55,11 @@ namespace StarForce
 
             GameOver = false;
             m_MyAircraft = null;
+
+            // 测试Data Node
+            IDataNode node = GameEntry.DataNode.GetOrAddNode("play_info");
+            PlayInfo playInfo = node.GetData<VarPlayInfo>();
+            Log.Info($"NickName: {playInfo.NickName}; PlayCount: {++playInfo.PlayCount}");
         }
 
         public virtual void Shutdown()
