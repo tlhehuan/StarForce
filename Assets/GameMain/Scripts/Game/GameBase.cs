@@ -58,8 +58,16 @@ namespace StarForce
 
             // 测试Data Node
             IDataNode node = GameEntry.DataNode.GetOrAddNode("play_info");
-            PlayInfo playInfo = node.GetData<VarPlayInfo>();
-            Log.Info($"NickName: {playInfo.NickName}; PlayCount: {++playInfo.PlayCount}");
+            VarPlayInfo varInst = node.GetData<VarPlayInfo>();
+            varInst ??= new PlayInfo()
+                {
+                    NickName = "Guest",
+                    PlayCount = 0
+                };
+            node.SetData<VarPlayInfo>(varInst);
+            
+            PlayInfo inst = varInst;
+            Log.Info($"NickName: {inst.NickName}; PlayCount: {inst.PlayCount}");
         }
 
         public virtual void Shutdown()
