@@ -57,17 +57,17 @@ namespace StarForce
             m_MyAircraft = null;
 
             // 测试Data Node
-            IDataNode node = GameEntry.DataNode.GetOrAddNode("play_info");
-            VarPlayInfo varInst = node.GetData<VarPlayInfo>();
-            varInst ??= new PlayInfo()
+            IDataNode node = GameEntry.DataNode.GetOrAddNode("play_info", GameEntry.DataNode.Root);
+            if (node.GetData() == null)
+            {
+                node.SetData<VarPlayInfo>(new PlayInfo()
                 {
                     NickName = "Guest",
                     PlayCount = 0
-                };
-            node.SetData<VarPlayInfo>(varInst);
-            
-            PlayInfo inst = varInst;
-            Log.Info($"NickName: {inst.NickName}; PlayCount: {inst.PlayCount}");
+                });
+            }
+            PlayInfo inst = node.GetData<VarPlayInfo>();
+            Log.Info($"NickName: {inst.NickName}; PlayCount: {++inst.PlayCount}");
         }
 
         public virtual void Shutdown()
